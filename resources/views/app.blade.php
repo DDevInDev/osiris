@@ -25,10 +25,40 @@
     <style>
         html {
             background-color: oklch(1 0 0);
+            scroll-behavior: smooth;
         }
 
         html.dark {
             background-color: oklch(0.145 0 0);
+        }
+
+        section {
+            position: relative;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-marquee {
+            animation: marquee 25s linear infinite;
+        }
+
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Optimize rendering */
+        img,
+        video {
+            content-visibility: auto;
         }
     </style>
 
