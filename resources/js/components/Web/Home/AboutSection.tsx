@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 
 const technologies = [
-  { name: "Laravel", logo: "/logos/laravel.svg" },
-  { name: "React", logo: "/logos/react.svg" },
-  { name: "TypeScript", logo: "/logos/typescript.svg" },
-  { name: "Node.js", logo: "/logos/node.svg" },
-  { name: "React native", logo: "/logos/react-native.svg" },
-  { name: "AWS", logo: "/logos/aws.svg" },
+  { name: "Laravel", logo: "/icons/laravel.svg" },
+  { name: "React", logo: "/icons/react.svg" },
+  { name: "TypeScript", logo: "/icons/typescript.svg" },
+  { name: "Node.js", logo: "/icons/node.svg" },
+  { name: "Android", logo: "/icons/android.svg" },
+  { name: "iOS", logo: "/icons/ios.svg" },
 ];
 
 const AboutSection = () => {
