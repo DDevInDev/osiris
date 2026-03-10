@@ -1,12 +1,37 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark'=> ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- Inline script to detect system dark mode preference and apply it immediately --}}
+    <title inertia>{{ config('app.name', 'Osiris Development') }}</title>
+
+    <meta name="description" content="Agencia especializada en desarrollo web, aplicaciones móviles, software a medida y automatización con inteligencia artificial.">
+
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Osiris Development - Desarrollo Web">
+    <meta property="og:description" content="Desarrollo web, aplicaciones móviles y software a medida.">
+    <meta property="og:image" content="{{ asset('images/og-image.jpg') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Osiris Development">
+    <meta name="twitter:description" content="Desarrollo web y software a medida.">
+    <meta name="twitter:image" content="{{ asset('images/og-image.jpg') }}">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+
     <script>
         (function() {
             const appearance = '{{ $appearance ?? "system" }}';
@@ -21,7 +46,6 @@
         })();
     </script>
 
-    {{-- Inline style to set the HTML background color based on our theme in app.css --}}
     <style>
         html {
             background-color: oklch(1 0 0);
@@ -38,11 +62,11 @@
 
         @keyframes marquee {
             from {
-                transform: translateX(0%);
+                transform: translateX(0%)
             }
 
             to {
-                transform: translateX(-50%);
+                transform: translateX(-50%)
             }
         }
 
@@ -55,29 +79,34 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Optimize rendering */
         img,
         video {
             content-visibility: auto;
         }
     </style>
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
-
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
     @viteReactRefresh
     @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+
     @inertiaHead
+
+        <script type="application/ld+json">
+        {!! json_encode([
+            "@@context" => "https://schema.org",
+            "@@type" => "Organization",
+            "name" => "Osiris Development",
+            "url" => url('/'),
+            "logo" => asset('Logo.svg'),
+            "description" => "Agencia especializada en desarrollo web, aplicaciones móviles y software a medida."
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+        </script>
+
 </head>
 
 <body class="font-sans antialiased">
+
     @inertia
+
 </body>
 
 </html>

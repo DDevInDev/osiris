@@ -1,2 +1,24 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Bloquear panel admin
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+Disallow: /password
+Disallow: /forgot-password
+Disallow: /settings
+Disallow: /dashboard
+
+# Bloquear rutas internas
+Disallow: /_debugbar
+Disallow: /telescope
+
+# Permitir assets
+Allow: /images/
+Allow: /css/
+Allow: /js/
+Allow: /build/
+
+# Sitemap
+Sitemap: https://tudominio.com/sitemap.xml
