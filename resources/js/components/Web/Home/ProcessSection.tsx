@@ -23,34 +23,42 @@ const steps: Step[] = [
     number: "01",
     letter: "A",
     code: "01",
-    title: "Assessment",
+    title: "Reunión de Descubrimiento",
     description:
-      "We begin by conducting a thorough assessment of your current business landscape, identifying key pain points and opportunities for growth.",
-    background: "/images/fondo.png",
+      "Agendamos una reunión contigo para entender tu negocio, objetivos y requerimientos del proyecto. Analizamos qué necesitas y cuál es la mejor solución tecnológica para tu empresa.",
+    background: "/images/process/reunion.jpg",
   },
   {
     number: "02",
     letter: "B",
     code: "02",
-    title: "Development",
+    title: "Análisis y Cotización",
     description:
-      "Based on our assessment, we develop a customized strategy and roadmap tailored to your business goals and market conditions.",
+      "Nuestro equipo analiza los requerimientos del proyecto y prepara una cotización detallada con alcance, tiempos de desarrollo y tecnologías recomendadas.",
   },
   {
     number: "03",
     letter: "C",
     code: "03",
-    title: "Implementation",
+    title: "Revisión y Aprobación",
     description:
-      "Our team works alongside yours to implement the recommended solutions, ensuring seamless integration and minimal disruption.",
+      "Presentamos la cotización en una segunda reunión para revisar cada punto del proyecto, resolver dudas y realizar ajustes antes de comenzar el desarrollo.",
   },
   {
     number: "04",
     letter: "D",
     code: "04",
-    title: "Monitoring and Adjustments",
+    title: "Inicio del Proyecto",
     description:
-      "We continuously monitor progress, measure results, and make adjustments to ensure sustained growth and maximum impact.",
+      "Una vez aprobada la propuesta, enviamos las formas de pago (generalmente 50% inicial y 50% al finalizar). Después entregamos el plan de trabajo y los primeros avances del proyecto.",
+  },
+  {
+    number: "05",
+    letter: "E",
+    code: "05",
+    title: "Entrega y Capacitación",
+    description:
+      "Al finalizar el desarrollo entregamos todos los accesos del proyecto, realizamos pruebas finales y brindamos capacitación para que puedas administrar tu plataforma correctamente.",
   },
 ];
 
@@ -63,10 +71,9 @@ const ProcessSection = ({
 }: ProcessSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [activeIndex, setActiveIndex] = useState(-1); // -1 = trailer, 0-3 = steps
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const totalSteps = steps.length;
-  // Add 1 for the trailer "step"
   const totalPanels = totalSteps + 1;
 
   const { scrollYProgress } = useScroll({
@@ -74,14 +81,13 @@ const ProcessSection = ({
     offset: ["start start", "end end"],
   });
 
-  // Create snap points including the trailer
   const snapPoints = Array.from({ length: totalPanels }, (_, i) => i / totalSteps);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const closest = snapPoints.reduce((prev, curr) =>
       Math.abs(curr - latest) < Math.abs(prev - latest) ? curr : prev
     );
-    const newIndex = snapPoints.indexOf(closest) - 1; // -1 for trailer, 0-3 for steps
+    const newIndex = snapPoints.indexOf(closest) - 1;
     setActiveIndex(newIndex);
   });
 
@@ -103,7 +109,6 @@ const ProcessSection = ({
 
   const cameraPush = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
 
-  // Fade out trailer text as we scroll
   const trailerOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const trailerScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
 
@@ -135,7 +140,6 @@ const ProcessSection = ({
     const sectionTop = sectionRef.current.offsetTop;
     const sectionHeight = sectionRef.current.offsetHeight;
 
-    // Adjust for trailer being index -1
     const adjustedIndex = index + 1;
     const target = sectionTop + (sectionHeight / totalSteps) * adjustedIndex;
 
@@ -152,6 +156,7 @@ const ProcessSection = ({
       style={{ height: `${totalPanels * 100}vh` }}
     >
       <div className="sticky top-0 h-screen w-screen overflow-hidden bg-black">
+
         {/* Background Video */}
         <video
           ref={videoRef}
@@ -166,7 +171,7 @@ const ProcessSection = ({
           <source src={videoBackground} type="video/mp4" />
         </video>
 
-        {/* Dynamic Background Images */}
+        {/* Background images */}
         <AnimatePresence mode="wait">
           {activeIndex >= 0 && steps[activeIndex]?.background && (
             <motion.div
@@ -183,32 +188,25 @@ const ProcessSection = ({
           )}
         </AnimatePresence>
 
-        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/40" />
 
-        {/* Trailer Text - Shows at start */}
+        {/* Trailer */}
         <motion.div
-          style={{
-            opacity: trailerOpacity,
-            scale: trailerScale,
-          }}
+          style={{ opacity: trailerOpacity, scale: trailerScale }}
           className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
         >
           <TrailerText
-            text="The Process"
-            className="text-6xl md:text-8xl lg:text-9xl font-bold text-center text-white"
+            text="Cómo Trabajamos"
+            className="text-6xl md:text-8xl lg:text-9xl font-bold text-center text-white/50"
           />
         </motion.div>
 
         {/* Progress Bar */}
         <div className="absolute bottom-10 left-20 right-20 h-[2px] bg-white/20 z-20">
-          <motion.div
-            style={{ width: progressWidth }}
-            className="h-full bg-white"
-          />
+          <motion.div style={{ width: progressWidth }} className="h-full bg-white" />
         </div>
 
-        {/* Step Indicators */}
+        {/* Indicators */}
         <div className="absolute bottom-20 left-20 flex gap-3 z-20">
           {steps.map((step, index) => (
             <button
@@ -219,20 +217,17 @@ const ProcessSection = ({
                   ? "bg-white scale-125"
                   : "bg-white/30 hover:bg-white/50"
               }`}
-              aria-label={`Go to step ${step.number}`}
             />
           ))}
         </div>
 
-        {/* Horizontal Scrolling Content Panels */}
+        {/* Panels */}
         <motion.div
           style={{ x, scale: cameraPush }}
           className="absolute top-0 left-0 h-full flex items-center z-10"
         >
-          {/* Spacer for trailer text (empty first panel) */}
           <div className="h-screen w-screen flex-shrink-0" />
 
-          {/* Step Panels */}
           {steps.map((step, index) => (
             <div
               key={step.code}
@@ -265,10 +260,16 @@ const ProcessSection = ({
           ))}
         </motion.div>
 
-        {/* Navigation Hints */}
-        <div className="absolute bottom-10 right-20 text-white/40 text-sm z-20">
-          Use ← → arrows to navigate
+        {/* CTA */}
+        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20">
+          <a
+            href="#contacto"
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium hover:scale-105 transition-all duration-300 shadow-lg shadow-indigo-500/30"
+          >
+            Iniciar proyecto
+          </a>
         </div>
+
       </div>
     </div>
   );

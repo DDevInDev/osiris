@@ -33,7 +33,7 @@ const Index = () => {
       </CinematicSection>
 
       <CinematicSection
-        backgroundImage="/images/5486.png"
+        backgroundImage="/images/back.jpg"
         parallaxIntensity={100}
       >
         <ServicesSection />
@@ -48,11 +48,11 @@ const Index = () => {
 
       <ProcessSection />
 
-      <CinematicSection backgroundImage="/images/clients-bg.jpg">
+      <CinematicSection>
         <ClientsSection />
       </CinematicSection>
 
-      <CinematicSection backgroundImage="/images/contact-bg.jpg">
+      <CinematicSection backgroundImage="/images/fondo.png">
         <ContactSection />
       </CinematicSection>
 

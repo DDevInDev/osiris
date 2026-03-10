@@ -11,13 +11,13 @@ const HeroSection = ({ backgroundImage }: HeroSectionProps) => {
   return (
     <section
       id="inicio"
+      aria-label="Agencia de desarrollo web y marketing digital"
       className="relative min-h-screen flex items-center overflow-hidden"
     >
       {/* Background image */}
       <div className="absolute inset-0">
-        {/* Imagen */}
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{
             backgroundImage: backgroundImage
               ? `url(${backgroundImage})`
@@ -25,6 +25,8 @@ const HeroSection = ({ backgroundImage }: HeroSectionProps) => {
           }}
         />
 
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" />
       </div>
 
       {/* Glow radial effect */}
@@ -35,50 +37,68 @@ const HeroSection = ({ backgroundImage }: HeroSectionProps) => {
 
         {/* TEXT */}
         <div className="flex-1 text-center lg:text-left">
+
           <p className="text-indigo-400 text-xs sm:text-sm tracking-[0.3em] uppercase mb-4">
-            Somos
+            Agencia de Desarrollo Web y Marketing Digital
           </p>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold leading-tight mb-6 text-white">
-            Agencia de Marketing Digital
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 text-white">
+            Desarrollo Web, Marketing Digital y Automatización con IA
           </h1>
 
-          <p className="text-white/70 max-w-lg mx-auto lg:mx-0 text-sm sm:text-base leading-relaxed mb-8">
-            Impulsamos marcas a través de estrategias digitales enfocadas en
-            crecimiento, automatización y posicionamiento digital.
+          <p className="text-white/70 max-w-lg mx-auto lg:mx-0 text-sm sm:text-base leading-relaxed mb-10">
+            Creamos sitios web, aplicaciones y estrategias digitales diseñadas
+            para atraer clientes, automatizar procesos y hacer crecer tu
+            negocio en México y Estados Unidos. Nuestro enfoque combina
+            desarrollo web profesional, diseño moderno y marketing digital
+            orientado a resultados.
           </p>
 
-          <div className="flex justify-center lg:justify-start">
+          <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+
             <a
               href="#servicios"
-              className="inline-flex items-center gap-3 px-6 py-3
+              className="inline-flex items-center justify-center gap-3 px-7 py-3
               bg-gradient-to-r from-indigo-500 to-purple-600
               text-white rounded-full font-medium text-sm
               hover:scale-105 transition-all duration-300 shadow-lg shadow-indigo-500/30"
             >
-              Conocer más
+              Ver servicios
               <span className="w-6 h-6 rounded-full border border-white/30 flex items-center justify-center">
                 <ChevronDown className="w-3 h-3" />
               </span>
             </a>
+
+            <a
+              href="#contacto"
+              className="inline-flex items-center justify-center px-7 py-3
+              border border-white/20 text-white/80 rounded-full text-sm font-medium
+              hover:border-indigo-500 hover:text-white transition-all duration-300"
+            >
+              Solicitar cotización
+            </a>
+
           </div>
+
         </div>
 
         {/* LOTTIE SIDE */}
         <div className="flex-1 flex justify-center mt-16 lg:mt-0 relative">
 
           {/* Glass container */}
-          <div className="relative p-6 rounded-full bg-white/1 border backdrop-blur-xl">
+          <div className="relative p-6 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
 
             {/* Inner glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/50 via-purple-500/50 to-pink-500/50 blur-2xl" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/40 via-purple-500/40 to-pink-500/40 blur-2xl" />
 
             <div className="relative z-10 w-[300px] sm:w-[400px] lg:w-[450px]">
               <Suspense fallback={<div className="w-full h-[400px]" />}>
                 <HeroLottie />
               </Suspense>
             </div>
+
           </div>
+
         </div>
       </div>
 
