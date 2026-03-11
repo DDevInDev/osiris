@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,7 +22,7 @@ class LeadController extends Controller
         }
 
         return Inertia::render('Leads/Index', [
-            'leads' => $query->latest()->paginate(10)->withQueryString(),
+            'leadsData' => $query->latest()->paginate(10)->withQueryString(),
             'filters' => $request->only('status', 'channel'),
         ]);
     }
@@ -37,5 +38,65 @@ class LeadController extends Controller
         ]);
 
         return back();
+    }
+
+    public function create()
+    {
+        $users = User::select('id', 'name')->get();
+
+        return Inertia::render('Leads/Create', [
+            'users' => $users
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'email'],
+            'phone' => ['nullable', 'string'],
+            'channel' => ['required', 'string'],
+            'status' => ['required', 'string'],
+            'assigned_to' => ['nullable', 'exists:users,id'],
+            'meta' => $request->meta ? ['array'] : [],
+        ]);
+
+        Lead::create($validated);
+
+        return redirect()->route('leads.index');
+    }
+
+    public function edit(Lead $lead)
+    {
+        $users = User::where('role', '!=', 'admin')->select('id', 'name')->get();
+
+        return Inertia::render('Leads/Edit', [
+            'lead' => $lead,
+            'users' => $users
+        ]);
+    }
+
+    public function update(Request $request, Lead $lead)
+    {
+        $validated = $request->validate([
+            'name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'email'],
+            'phone' => ['nullable', 'string'],
+            'channel' => ['required', 'string'],
+            'status' => ['required', 'string'],
+            'assigned_to' => ['nullable', 'exists:users,id'],
+            'meta' => $request->meta ? ['array'] : [],
+        ]);
+
+        $lead->update($validated);
+
+        return redirect()->route('leads.index');
+    }
+
+    public function destroy(Lead $lead)
+    {
+        $lead->delete();
+
+        return redirect()->route('leads.index');
     }
 }

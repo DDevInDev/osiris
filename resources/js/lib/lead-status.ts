@@ -15,11 +15,11 @@ export const leadStatusLabel: Record<LeadStatus, string> = {
 
 export const leadStatusVariant: Record<
   LeadStatus,
-  'default' | 'secondary' | 'success' | 'destructive'
+  'default' | 'secondary' | 'outline' | 'destructive'
 > = {
   new: 'secondary',
   contacted: 'default',
   qualified: 'default',
-  converted: 'success',
+  converted: 'outline',
   discarded: 'destructive',
 }
