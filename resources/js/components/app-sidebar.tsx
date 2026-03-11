@@ -24,7 +24,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Leads',
-        href: '/leads',
+        href: '/admin/leads',
         icon: Folder,
     }
 ];
