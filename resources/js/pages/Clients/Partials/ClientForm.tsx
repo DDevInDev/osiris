@@ -28,6 +28,7 @@ interface ClientFormData {
   primary_email: string
   primary_phone: string
   notes: string
+  lead_id?: number
 }
 
 interface Props {
@@ -55,7 +56,8 @@ export default function ClientForm({
     city: initialValues?.city ?? '',
     primary_email: initialValues?.primary_email ?? '',
     primary_phone: initialValues?.primary_phone ?? '',
-    notes: initialValues?.notes ?? ''
+    notes: initialValues?.notes ?? '',
+    lead_id: initialValues?.lead_id
   })
 
   function submit(e: React.FormEvent) {

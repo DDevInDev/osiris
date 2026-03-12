@@ -39,6 +39,7 @@ import {
 
 import { dashboard } from '@/routes'
 import leads from '@/routes/leads'
+import clients from '@/routes/clients'
 
 interface Props {
   leadsData: {
@@ -240,6 +241,16 @@ export default function LeadsIndex({ leadsData, filters }: Props) {
                       </DropdownMenuTrigger>
 
                       <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() =>
+                            router.get(
+                              clients.create.url(),
+                              { lead_id: lead.id }
+                            )
+                          }
+                        >
+                          Convert to client
+                        </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() =>
                             router.get(

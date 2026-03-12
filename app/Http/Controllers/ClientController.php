@@ -7,6 +7,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
+use App\Models\Lead;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -38,20 +39,47 @@ class ClientController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $users = User::where('role', 'user')
             ->select('id', 'name', 'email')
             ->get();
 
+        $initialValues = null;
+
+        if ($request->filled('lead_id')) {
+
+            $lead = Lead::findOrFail($request->lead_id);
+
+            $initialValues = [
+                'user_id' => $lead->assigned_user_id,
+                'company_name' => $lead->meta['company'] ?? $lead->name,
+                'website' => $lead->meta['website'] ?? '',
+                'client_type' => 'development',
+                'currency' => 'USD',
+                'country' => '',
+                'state' => '',
+                'city' => '',
+                'primary_email' => $lead->email,
+                'primary_phone' => $lead->phone,
+                'notes' => $lead->meta['notes'] ?? '',
+                'lead_id' => $lead->id
+            ];
+        }
         return Inertia::render('Clients/Create', [
-            'users' => $users
+            'users' => $users,
+            'initialValues' => $initialValues
         ]);
     }
 
     public function store(StoreClientRequest $request)
     {
         Client::create($request->validated());
+
+        if ($request->lead_id) {
+            Lead::where('id', $request->lead_id)
+                ->update(['status' => 'converted']);
+        }
 
         return redirect()
             ->route('clients.index')
