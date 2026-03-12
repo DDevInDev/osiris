@@ -26,6 +26,11 @@ const mainNavItems: NavItem[] = [
         title: 'Leads',
         href: '/admin/leads',
         icon: Folder,
+    },
+    {
+        title: 'Clients',
+        href: '/admin/clients',
+        icon: Folder,
     }
 ];
 
