@@ -63,7 +63,14 @@ class LeadController extends Controller
 
         Lead::create($validated);
 
-        return redirect()->route('leads.index');
+        return redirect()
+            ->route('leads.index')
+            ->with('toast', [
+                'type' => 'success',
+                'title' => 'Cliente creado',
+                'description' => 'El cliente fue registrado correctamente',
+                'position' => 'top-center'
+            ]);
     }
 
     public function edit(Lead $lead)
@@ -90,13 +97,27 @@ class LeadController extends Controller
 
         $lead->update($validated);
 
-        return redirect()->route('leads.index');
+        return redirect()
+            ->route('leads.index')
+            ->with('toast', [
+                'type' => 'success',
+                'title' => 'Cliente actualizado',
+                'description' => 'Los datos del cliente fueron actualizados correctamente',
+                'position' => 'top-center'
+            ]);
     }
 
     public function destroy(Lead $lead)
     {
         $lead->delete();
 
-        return redirect()->route('leads.index');
+        return redirect()
+            ->route('leads.index')
+            ->with('toast', [
+                'type' => 'success',
+                'title' => 'Cliente eliminado',
+                'description' => 'El cliente fue eliminado correctamente',
+                'position' => 'top-center'
+            ]);
     }
 }

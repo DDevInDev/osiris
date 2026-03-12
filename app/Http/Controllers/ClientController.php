@@ -55,7 +55,12 @@ class ClientController extends Controller
 
         return redirect()
             ->route('clients.index')
-            ->with('success', 'Client created successfully');
+            ->with('toast', [
+                'type' => 'success',
+                'title' => 'Cliente creado',
+                'description' => 'El cliente fue creado correctamente',
+                'position' => 'top-center'
+            ]);
     }
 
     public function edit(Client $client)
@@ -76,13 +81,25 @@ class ClientController extends Controller
 
         return redirect()
             ->route('clients.index')
-            ->with('success', 'Client updated successfully');
+            ->with('toast', [
+                'type' => 'success',
+                'title' => 'Cliente actualizado',
+                'description' => 'El cliente fue actualizado correctamente',
+                'position' => 'top-center'
+            ]);
     }
 
     public function destroy(Client $client)
     {
         $client->delete();
 
-        return redirect()->back();
+        return redirect()
+            ->route('clients.index')
+            ->with('toast', [
+                'type' => 'success',
+                'title' => 'Cliente eliminado',
+                'description' => 'El cliente fue eliminado correctamente',
+                'position' => 'top-center'
+            ]);
     }
 }
