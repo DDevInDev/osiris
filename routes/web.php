@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\Web\WebController;
@@ -19,6 +20,7 @@ Route::middleware(['auth', 'verified', 'role:admin,manager'])->prefix('admin')->
         ->name('leads.update-status');
 
     Route::resource('clients', ClientController::class);
+    Route::resource('users', UserController::class);
 });
 
 require __DIR__ . '/settings.php';

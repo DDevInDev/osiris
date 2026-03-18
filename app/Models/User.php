@@ -25,6 +25,9 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'last_name',
+        'phone',
+        'position'
     ];
 
     /**
@@ -57,5 +60,10 @@ class User extends Authenticatable
     public function client()
     {
         return $this->hasOne(Client::class);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->name} {$this->last_name}";
     }
 }
