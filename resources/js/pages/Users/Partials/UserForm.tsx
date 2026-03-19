@@ -6,14 +6,21 @@ import {
     SelectContent,
     SelectItem,
     SelectTrigger,
-    SelectValue
+    SelectValue,
 } from '@/components/ui/select'
+import CommissionMetaFields from './CommissionMetaFields'
 
-interface Props {
-    user?: any
-    roles: string[]
-    submitUrl: string
-    method?: 'post' | 'put'
+interface CommissionMeta {
+    enabled: boolean
+    type: string
+    rate: string
+    applies_on: string
+    currency: string
+    notes: string
+}
+
+interface UserMeta {
+    commission: CommissionMeta
 }
 
 interface UserFormData {
@@ -24,10 +31,41 @@ interface UserFormData {
     position: string
     role: string
     password: string
+    meta: UserMeta
 }
 
-export default function UserForm({ user, roles, submitUrl, method = 'post' }: Props) {
+interface UserData {
+    name?: string
+    last_name?: string
+    email?: string
+    phone?: string
+    position?: string
+    role?: string
+    meta?: Partial<UserMeta>
+}
 
+interface Props {
+    user?: UserData
+    roles: string[]
+    submitUrl: string
+    method?: 'post' | 'put'
+}
+
+const defaultCommissionMeta: CommissionMeta = {
+    enabled: false,
+    type: 'percentage',
+    rate: '',
+    applies_on: 'project_total',
+    currency: 'MXN',
+    notes: '',
+}
+
+export default function UserForm({
+    user,
+    roles,
+    submitUrl,
+    method = 'post',
+}: Props) {
     const { data, setData, post, put, processing, errors } = useForm<UserFormData>({
         name: user?.name ?? '',
         last_name: user?.last_name ?? '',
@@ -35,8 +73,32 @@ export default function UserForm({ user, roles, submitUrl, method = 'post' }: Pr
         phone: user?.phone ?? '',
         position: user?.position ?? '',
         role: user?.role ?? '',
-        password: ''
+        password: '',
+        meta: {
+            commission: {
+                ...defaultCommissionMeta,
+                ...(user?.meta?.commission ?? {}),
+                rate: user?.meta?.commission?.rate !== undefined
+                    ? String(user.meta.commission.rate)
+                    : defaultCommissionMeta.rate,
+            },
+        },
     })
+
+    const isCommissioner = data.role === 'commissioner'
+
+    const handleCommissionChange = <K extends keyof CommissionMeta>(
+        key: K,
+        value: CommissionMeta[K],
+    ) => {
+        setData('meta', {
+            ...data.meta,
+            commission: {
+                ...data.meta.commission,
+                [key]: value,
+            },
+        })
+    }
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -50,52 +112,58 @@ export default function UserForm({ user, roles, submitUrl, method = 'post' }: Pr
     }
 
     return (
-        <form onSubmit={submit} className="space-y-6 max-w-xl">
-
+        <form onSubmit={submit} className="max-w-xl space-y-6">
             <div className="grid grid-cols-2 gap-4">
-
                 <div>
                     <Input
                         placeholder="Nombre"
                         value={data.name}
-                        onChange={e => setData('name', e.target.value)}
+                        onChange={(e) => setData('name', e.target.value)}
                     />
-                    {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+                    {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                 </div>
+
                 <div>
                     <Input
                         placeholder="Apellido"
                         value={data.last_name}
-                        onChange={e => setData('last_name', e.target.value)}
+                        onChange={(e) => setData('last_name', e.target.value)}
                     />
-                    {errors.last_name && <p className="text-sm text-red-500">{errors.last_name}</p>}
+                    {errors.last_name && (
+                        <p className="mt-1 text-sm text-red-500">{errors.last_name}</p>
+                    )}
                 </div>
-
             </div>
 
             <div>
                 <Input
                     placeholder="Correo electrónico"
                     value={data.email}
-                    onChange={e => setData('email', e.target.value)}
+                    onChange={(e) => setData('email', e.target.value)}
                 />
-                {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <Input
+                        placeholder="Teléfono"
+                        value={data.phone}
+                        onChange={(e) => setData('phone', e.target.value)}
+                    />
+                    {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+                </div>
 
-                <Input
-                    placeholder="Teléfono"
-                    value={data.phone}
-                    onChange={e => setData('phone', e.target.value)}
-                />
-
-                <Input
-                    placeholder="Posición"
-                    value={data.position}
-                    onChange={e => setData('position', e.target.value)}
-                />
-
+                <div>
+                    <Input
+                        placeholder="Posición"
+                        value={data.position}
+                        onChange={(e) => setData('position', e.target.value)}
+                    />
+                    {errors.position && (
+                        <p className="mt-1 text-sm text-red-500">{errors.position}</p>
+                    )}
+                </div>
             </div>
 
             <div>
@@ -104,33 +172,43 @@ export default function UserForm({ user, roles, submitUrl, method = 'post' }: Pr
                     onValueChange={(value) => setData('role', value)}
                 >
                     <SelectTrigger>
-                        <SelectValue placeholder="Seleccionar rol" className='capitalize' />
+                        <SelectValue placeholder="Seleccionar rol" className="capitalize" />
                     </SelectTrigger>
 
                     <SelectContent>
-                        {roles.map((role, index) => (
-                            <SelectItem key={index} value={role} className='capitalize'>
+                        {roles.map((role) => (
+                            <SelectItem key={role} value={role} className="capitalize">
                                 {role}
                             </SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
+                {errors.role && <p className="mt-1 text-sm text-red-500">{errors.role}</p>}
             </div>
+
+            {isCommissioner && (
+                <CommissionMetaFields
+                    value={data.meta.commission}
+                    errors={errors as Record<string, string>}
+                    onChange={handleCommissionChange}
+                />
+            )}
 
             <div>
                 <Input
                     type="password"
-                    placeholder="Contraseña"
+                    placeholder={method === 'put' ? 'Nueva contraseña (opcional)' : 'Contraseña'}
                     value={data.password}
-                    onChange={e => setData('password', e.target.value)}
+                    onChange={(e) => setData('password', e.target.value)}
                 />
-                {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
+                {errors.password && (
+                    <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+                )}
             </div>
 
             <Button disabled={processing}>
-                Guardar usuario
+                {method === 'put' ? 'Actualizar usuario' : 'Guardar usuario'}
             </Button>
-
         </form>
     )
 }
