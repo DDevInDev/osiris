@@ -2,7 +2,7 @@ import AppLayout from "@/layouts/app-layout"
 import ClientForm from "./Partials/ClientForm"
 import clients from "@/routes/clients"
 
-export default function Create({ users, initialValues }: any) {
+export default function Create({ users, initialValues, commissioners }: any) {
 
   return (
     <AppLayout>
@@ -11,7 +11,8 @@ export default function Create({ users, initialValues }: any) {
           Crear Cliente
         </h1>
 
-        <ClientForm users={users} initialValues={initialValues} submitUrl={clients.store.url()} />
+        <ClientForm users={users} initialValues={initialValues} submitUrl={clients.store.url()} commissioners={commissioners}
+        />
       </div>
     </AppLayout>
   )

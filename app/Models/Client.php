@@ -10,6 +10,7 @@ class Client extends Model
 {
     protected $fillable = [
         'user_id',
+        'commissioner_id',
         'company_name',
         'website',
         'client_type',
@@ -25,6 +26,11 @@ class Client extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function commissioner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'commissioner_id');
     }
 
     public function addresses(): HasMany

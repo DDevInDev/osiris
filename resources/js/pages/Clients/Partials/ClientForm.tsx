@@ -18,6 +18,7 @@ interface User {
 
 interface ClientFormData {
   user_id: number | null
+  commissioner_id: number | null
   company_name: string
   website: string
   client_type: string
@@ -33,6 +34,7 @@ interface ClientFormData {
 
 interface Props {
   users: User[]
+  commissioners: User[]
   initialValues?: ClientFormData
   submitUrl: string
   method?: 'post' | 'put'
@@ -40,13 +42,14 @@ interface Props {
 
 export default function ClientForm({
   users,
+  commissioners,
   initialValues,
   submitUrl,
   method = 'post'
 }: Props) {
-
   const { data, setData, post, put, processing, errors } = useForm<ClientFormData>({
     user_id: initialValues?.user_id ?? null,
+    commissioner_id: initialValues?.commissioner_id ?? null,
     company_name: initialValues?.company_name ?? '',
     website: initialValues?.website ?? '',
     client_type: initialValues?.client_type ?? 'development',
@@ -73,19 +76,13 @@ export default function ClientForm({
 
   return (
     <form onSubmit={submit} className="space-y-8">
-
       <div className="grid lg:grid-cols-2 gap-8">
-
-        {/* Client Info */}
-
         <div className="space-y-6 border rounded-lg p-6 bg-background">
-
           <h2 className="text-lg font-semibold">
             Información del cliente
           </h2>
 
           <div className="grid gap-4">
-
             <div className="space-y-2">
               <label className="text-sm font-medium">
                 Empresa
@@ -144,30 +141,22 @@ export default function ClientForm({
                 }
               />
             </div>
-
           </div>
-
         </div>
 
-        {/* Comercial */}
-
         <div className="space-y-6 border rounded-lg p-6 bg-background">
-
           <h2 className="text-lg font-semibold">
             Información comercial
           </h2>
 
           <div className="grid gap-4">
-
-            {/* User */}
-
             <div className="space-y-2">
               <label className="text-sm font-medium">
                 Usuario asignado
               </label>
 
               <Select
-                value={data.user_id ? String(data.user_id) : ''}
+                value={data.user_id ? String(data.user_id) : '0'}
                 onValueChange={(value) =>
                   setData('user_id', value === '0' ? null : Number(value))
                 }
@@ -177,7 +166,6 @@ export default function ClientForm({
                 </SelectTrigger>
 
                 <SelectContent>
-
                   <SelectItem value="0">
                     Sin usuario
                   </SelectItem>
@@ -190,14 +178,53 @@ export default function ClientForm({
                       {user.name}
                     </SelectItem>
                   ))}
-
                 </SelectContent>
-
               </Select>
 
+              {errors.user_id && (
+                <p className="text-sm text-red-500">
+                  {errors.user_id}
+                </p>
+              )}
             </div>
 
-            {/* Client Type */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                Comisionista
+              </label>
+
+              <Select
+                value={data.commissioner_id ? String(data.commissioner_id) : '0'}
+                onValueChange={(value) =>
+                  setData('commissioner_id', value === '0' ? null : Number(value))
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Seleccionar comisionista" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="0">
+                    Sin comisionista
+                  </SelectItem>
+
+                  {commissioners.map((commissioner) => (
+                    <SelectItem
+                      key={commissioner.id}
+                      value={String(commissioner.id)}
+                    >
+                      {commissioner.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {errors.commissioner_id && (
+                <p className="text-sm text-red-500">
+                  {errors.commissioner_id}
+                </p>
+              )}
+            </div>
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
@@ -220,11 +247,8 @@ export default function ClientForm({
                   <SelectItem value="marketing">Marketing</SelectItem>
                   <SelectItem value="ai">AI</SelectItem>
                 </SelectContent>
-
               </Select>
             </div>
-
-            {/* Currency */}
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
@@ -246,27 +270,18 @@ export default function ClientForm({
                   <SelectItem value="MXN">MXN</SelectItem>
                   <SelectItem value="EUR">EUR</SelectItem>
                 </SelectContent>
-
               </Select>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
-      {/* Location */}
-
       <div className="border rounded-lg p-6 bg-background space-y-6">
-
         <h2 className="text-lg font-semibold">
           Ubicación
         </h2>
 
         <div className="grid md:grid-cols-3 gap-6">
-
           <div className="space-y-2">
             <label className="text-sm font-medium">
               País
@@ -305,15 +320,10 @@ export default function ClientForm({
               }
             />
           </div>
-
         </div>
-
       </div>
 
-      {/* Notes */}
-
       <div className="border rounded-lg p-6 bg-background space-y-4">
-
         <label className="text-sm font-medium">
           Notas
         </label>
@@ -324,7 +334,6 @@ export default function ClientForm({
             setData('notes', e.target.value)
           }
         />
-
       </div>
 
       <div className="flex justify-end">
@@ -332,7 +341,6 @@ export default function ClientForm({
           Guardar cliente
         </Button>
       </div>
-
     </form>
   )
 }

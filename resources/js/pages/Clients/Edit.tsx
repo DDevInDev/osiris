@@ -2,7 +2,7 @@ import AppLayout from "@/layouts/app-layout"
 import ClientForm from "./Partials/ClientForm"
 import clients from "@/routes/clients"
 
-export default function Edit({ users, client }: any) {
+export default function Edit({ users, client, commissioners }: any) {
 
   return (
     <AppLayout>
@@ -13,6 +13,7 @@ export default function Edit({ users, client }: any) {
 
         <ClientForm
           users={users}
+          commissioners={commissioners}
           submitUrl={clients.update({ client: client.id }).url}
           method="put"
           initialValues={{
@@ -26,7 +27,8 @@ export default function Edit({ users, client }: any) {
             city: client.city,
             primary_email: client.primary_email,
             primary_phone: client.primary_phone,
-            notes: client.notes
+            notes: client.notes,
+            commissioner_id: client.commissioner_id
           }}
         />
       </div>

@@ -32,6 +32,8 @@ class StoreClientRequest extends FormRequest
             'primary_phone' => ['nullable','string'],
 
             'notes' => ['nullable','string'],
+
+            'commissioner_id' => ['nullable', 'exists:users,id'],
         ];
     }
 }
