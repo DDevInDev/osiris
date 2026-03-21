@@ -97,7 +97,7 @@ class ClientController extends Controller
 
     public function edit(Client $client)
     {
-        $users = User::where('role', 'user')
+        $users = User::whereNotIn('role', ['commissioner'])
             ->select('id', 'name', 'email')
             ->get();
         $commissioners = User::where('role', 'commissioner')
