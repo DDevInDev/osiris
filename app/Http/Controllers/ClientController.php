@@ -41,11 +41,14 @@ class ClientController extends Controller
 
     public function create(Request $request)
     {
-        $users = User::where('role', 'user')
+        $users = User::whereNotIn('role', ['commissioner'])
             ->select('id', 'name', 'email')
             ->get();
 
         $initialValues = null;
+        $commissioners = User::where('role', 'commissioner')
+            ->select('id', 'name', 'email')
+            ->get();
 
         if ($request->filled('lead_id')) {
 
@@ -68,7 +71,8 @@ class ClientController extends Controller
         }
         return Inertia::render('Clients/Create', [
             'users' => $users,
-            'initialValues' => $initialValues
+            'initialValues' => $initialValues,
+            'commissioners' => $commissioners
         ]);
     }
 
@@ -96,10 +100,14 @@ class ClientController extends Controller
         $users = User::where('role', 'user')
             ->select('id', 'name', 'email')
             ->get();
+        $commissioners = User::where('role', 'commissioner')
+            ->select('id', 'name', 'email')
+            ->get();
 
         return Inertia::render('Clients/Edit', [
             'client' => $client,
-            'users' => $users
+            'users' => $users,
+            'commissioners' => $commissioners
         ]);
     }
 
