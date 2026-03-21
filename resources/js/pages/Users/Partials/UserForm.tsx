@@ -78,9 +78,10 @@ export default function UserForm({
             commission: {
                 ...defaultCommissionMeta,
                 ...(user?.meta?.commission ?? {}),
-                rate: user?.meta?.commission?.rate !== undefined
-                    ? String(user.meta.commission.rate)
-                    : defaultCommissionMeta.rate,
+                rate:
+                    user?.meta?.commission?.rate !== undefined
+                        ? String(user.meta.commission.rate)
+                        : defaultCommissionMeta.rate,
             },
         },
     })
@@ -100,7 +101,7 @@ export default function UserForm({
         })
     }
 
-    const submit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
         if (method === 'put') {
@@ -112,20 +113,22 @@ export default function UserForm({
     }
 
     return (
-        <form onSubmit={submit} className="max-w-xl space-y-6">
+        <form onSubmit={handleSubmit} className="max-w-xl space-y-6">
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <Input
-                        placeholder="Nombre"
+                        placeholder="First name"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                     />
-                    {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+                    {errors.name && (
+                        <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+                    )}
                 </div>
 
                 <div>
                     <Input
-                        placeholder="Apellido"
+                        placeholder="Last name"
                         value={data.last_name}
                         onChange={(e) => setData('last_name', e.target.value)}
                     />
@@ -137,26 +140,30 @@ export default function UserForm({
 
             <div>
                 <Input
-                    placeholder="Correo electrónico"
+                    placeholder="Email address"
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
                 />
-                {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+                {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <Input
-                        placeholder="Teléfono"
+                        placeholder="Phone"
                         value={data.phone}
                         onChange={(e) => setData('phone', e.target.value)}
                     />
-                    {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+                    {errors.phone && (
+                        <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+                    )}
                 </div>
 
                 <div>
                     <Input
-                        placeholder="Posición"
+                        placeholder="Position"
                         value={data.position}
                         onChange={(e) => setData('position', e.target.value)}
                     />
@@ -172,7 +179,7 @@ export default function UserForm({
                     onValueChange={(value) => setData('role', value)}
                 >
                     <SelectTrigger>
-                        <SelectValue placeholder="Seleccionar rol" className="capitalize" />
+                        <SelectValue placeholder="Select a role" className="capitalize" />
                     </SelectTrigger>
 
                     <SelectContent>
@@ -183,7 +190,10 @@ export default function UserForm({
                         ))}
                     </SelectContent>
                 </Select>
-                {errors.role && <p className="mt-1 text-sm text-red-500">{errors.role}</p>}
+
+                {errors.role && (
+                    <p className="mt-1 text-sm text-red-500">{errors.role}</p>
+                )}
             </div>
 
             {isCommissioner && (
@@ -197,7 +207,7 @@ export default function UserForm({
             <div>
                 <Input
                     type="password"
-                    placeholder={method === 'put' ? 'Nueva contraseña (opcional)' : 'Contraseña'}
+                    placeholder={method === 'put' ? 'New password (optional)' : 'Password'}
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
                 />
@@ -207,7 +217,7 @@ export default function UserForm({
             </div>
 
             <Button disabled={processing}>
-                {method === 'put' ? 'Actualizar usuario' : 'Guardar usuario'}
+                {method === 'put' ? 'Update user' : 'Save user'}
             </Button>
         </form>
     )

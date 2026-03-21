@@ -164,7 +164,7 @@ export default function ClientsIndex({ clientsData, filters }: Props) {
           <Button
             onClick={() => router.get(clients.create.url())}
           >
-            Nuevo cliente
+            New client
           </Button>
 
         </div>

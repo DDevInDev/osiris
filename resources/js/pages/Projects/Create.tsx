@@ -17,6 +17,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     title: 'Projects',
     href: dashboard().url,
   },
+  {
+    title: 'Create',
+    href: ''
+  }
 ]
 
 export default function Create({
@@ -31,7 +35,7 @@ export default function Create({
 
       <div className="space-y-6 p-4">
         <h1 className="text-2xl font-bold">
-          Crear proyecto
+          Create project
         </h1>
 
         <ProjectForm

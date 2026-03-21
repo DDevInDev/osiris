@@ -63,7 +63,7 @@ export default function ClientForm({
     lead_id: initialValues?.lead_id
   })
 
-  function submit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     if (method === 'put') {
@@ -75,17 +75,17 @@ export default function ClientForm({
   }
 
   return (
-    <form onSubmit={submit} className="space-y-8">
-      <div className="grid lg:grid-cols-2 gap-8">
-        <div className="space-y-6 border rounded-lg p-6 bg-background">
+    <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="grid gap-8 lg:grid-cols-2">
+        <div className="space-y-6 rounded-lg border bg-background p-6">
           <h2 className="text-lg font-semibold">
-            Información del cliente
+            Client information
           </h2>
 
           <div className="grid gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Empresa
+                Company
               </label>
 
               <Input
@@ -117,7 +117,7 @@ export default function ClientForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Email principal
+                Primary email
               </label>
 
               <Input
@@ -131,7 +131,7 @@ export default function ClientForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Teléfono
+                Primary phone
               </label>
 
               <Input
@@ -144,15 +144,15 @@ export default function ClientForm({
           </div>
         </div>
 
-        <div className="space-y-6 border rounded-lg p-6 bg-background">
+        <div className="space-y-6 rounded-lg border bg-background p-6">
           <h2 className="text-lg font-semibold">
-            Información comercial
+            Commercial information
           </h2>
 
           <div className="grid gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Usuario asignado
+                Assigned user
               </label>
 
               <Select
@@ -162,12 +162,12 @@ export default function ClientForm({
                 }
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar usuario" />
+                  <SelectValue placeholder="Select user" />
                 </SelectTrigger>
 
                 <SelectContent>
                   <SelectItem value="0">
-                    Sin usuario
+                    No user
                   </SelectItem>
 
                   {users.map((user) => (
@@ -190,7 +190,7 @@ export default function ClientForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Comisionista
+                Commissioner
               </label>
 
               <Select
@@ -200,12 +200,12 @@ export default function ClientForm({
                 }
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar comisionista" />
+                  <SelectValue placeholder="Select commissioner" />
                 </SelectTrigger>
 
                 <SelectContent>
                   <SelectItem value="0">
-                    Sin comisionista
+                    No commissioner
                   </SelectItem>
 
                   {commissioners.map((commissioner) => (
@@ -228,7 +228,7 @@ export default function ClientForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Tipo de cliente
+                Client type
               </label>
 
               <Select
@@ -252,7 +252,7 @@ export default function ClientForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Moneda
+                Currency
               </label>
 
               <Select
@@ -276,15 +276,15 @@ export default function ClientForm({
         </div>
       </div>
 
-      <div className="border rounded-lg p-6 bg-background space-y-6">
+      <div className="space-y-6 rounded-lg border bg-background p-6">
         <h2 className="text-lg font-semibold">
-          Ubicación
+          Location
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid gap-6 md:grid-cols-3">
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              País
+              Country
             </label>
 
             <Input
@@ -297,7 +297,7 @@ export default function ClientForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Estado
+              State
             </label>
 
             <Input
@@ -310,7 +310,7 @@ export default function ClientForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Ciudad
+              City
             </label>
 
             <Input
@@ -323,9 +323,9 @@ export default function ClientForm({
         </div>
       </div>
 
-      <div className="border rounded-lg p-6 bg-background space-y-4">
+      <div className="space-y-4 rounded-lg border bg-background p-6">
         <label className="text-sm font-medium">
-          Notas
+          Notes
         </label>
 
         <Input
@@ -338,7 +338,7 @@ export default function ClientForm({
 
       <div className="flex justify-end">
         <Button type="submit" disabled={processing}>
-          Guardar cliente
+          {method === 'put' ? 'Update client' : 'Save client'}
         </Button>
       </div>
     </form>

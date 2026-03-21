@@ -36,7 +36,7 @@ export default function LeadsCreate() {
             <div className="p-6 space-y-6">
 
                 <h1 className="text-2xl font-bold">
-                    Crear nuevo lead
+                    Create new Lead
                 </h1>
 
                 <LeadForm

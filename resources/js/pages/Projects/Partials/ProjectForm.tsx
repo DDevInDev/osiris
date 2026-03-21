@@ -119,7 +119,7 @@ export default function ProjectForm({
     })
   }
 
-  function submit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     if (method === 'put') {
@@ -131,17 +131,17 @@ export default function ProjectForm({
   }
 
   return (
-    <form onSubmit={submit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-6 rounded-lg border bg-background p-6">
           <h2 className="text-lg font-semibold">
-            Información del proyecto
+            Project information
           </h2>
 
           <div className="grid gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Cliente
+                Client
               </label>
 
               <Select
@@ -149,7 +149,7 @@ export default function ProjectForm({
                 onValueChange={(value) => setData('client_id', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un cliente" />
+                  <SelectValue placeholder="Select a client" />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -173,13 +173,13 @@ export default function ProjectForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Nombre del proyecto
+                Project name
               </label>
 
               <Input
                 value={data.name}
                 onChange={(e) => setData('name', e.target.value)}
-                placeholder="Ej. Sitio web corporativo"
+                placeholder="Ex. Corporate website"
               />
 
               {errors.name && (
@@ -191,13 +191,13 @@ export default function ProjectForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Código del proyecto
+                Project code
               </label>
 
               <Input
                 value={data.project_code}
                 onChange={(e) => setData('project_code', e.target.value)}
-                placeholder="Ej. PRJ-2026-001"
+                placeholder="Ex. PRJ-2026-001"
               />
 
               {errors.project_code && (
@@ -209,14 +209,14 @@ export default function ProjectForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Descripción
+                Description
               </label>
 
               <Textarea
                 rows={5}
                 value={data.description}
                 onChange={(e) => setData('description', e.target.value)}
-                placeholder="Describe el alcance general del proyecto"
+                placeholder="Describe the general scope of the project"
               />
 
               {errors.description && (
@@ -230,13 +230,13 @@ export default function ProjectForm({
 
         <div className="space-y-6 rounded-lg border bg-background p-6">
           <h2 className="text-lg font-semibold">
-            Gestión comercial
+            Commercial management
           </h2>
 
           <div className="grid gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Asignado a
+                Assigned to
               </label>
 
               <Select
@@ -244,12 +244,12 @@ export default function ProjectForm({
                 onValueChange={(value) => setData('assigned_to', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar usuario" />
+                  <SelectValue placeholder="Select a user" />
                 </SelectTrigger>
 
                 <SelectContent>
                   <SelectItem value="0">
-                    Sin asignar
+                    Unassigned
                   </SelectItem>
 
                   {users.map((user) => (
@@ -272,7 +272,7 @@ export default function ProjectForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Tipo de proyecto
+                Project type
               </label>
 
               <Select
@@ -280,7 +280,7 @@ export default function ProjectForm({
                 onValueChange={(value) => setData('type', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un tipo" />
+                  <SelectValue placeholder="Select a type" />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -304,7 +304,7 @@ export default function ProjectForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Estado
+                Status
               </label>
 
               <Select
@@ -312,7 +312,7 @@ export default function ProjectForm({
                 onValueChange={(value) => setData('status', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un estado" />
+                  <SelectValue placeholder="Select a status" />
                 </SelectTrigger>
 
                 <SelectContent>
@@ -336,7 +336,7 @@ export default function ProjectForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Moneda
+                Currency
               </label>
 
               <Input
@@ -357,13 +357,13 @@ export default function ProjectForm({
 
       <div className="space-y-6 rounded-lg border bg-background p-6">
         <h2 className="text-lg font-semibold">
-          Fechas y presupuesto
+          Dates and budget
         </h2>
 
         <div className="grid gap-6 md:grid-cols-3">
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Presupuesto
+              Budget
             </label>
 
             <Input
@@ -382,7 +382,7 @@ export default function ProjectForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Precio final
+              Final price
             </label>
 
             <Input
@@ -401,7 +401,7 @@ export default function ProjectForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Anticipo
+              Advance amount
             </label>
 
             <Input
@@ -422,7 +422,7 @@ export default function ProjectForm({
         <div className="grid gap-6 md:grid-cols-3">
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Fecha de inicio
+              Start date
             </label>
 
             <Input
@@ -440,7 +440,7 @@ export default function ProjectForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Fecha límite
+              Due date
             </label>
 
             <Input
@@ -458,7 +458,7 @@ export default function ProjectForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Fecha de finalización
+              Completion date
             </label>
 
             <Input
@@ -478,7 +478,7 @@ export default function ProjectForm({
 
       <div className="space-y-6 rounded-lg border bg-background p-6">
         <h2 className="text-lg font-semibold">
-          Entregables y recursos
+          Deliverables and resources
         </h2>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -518,7 +518,7 @@ export default function ProjectForm({
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Horas estimadas
+                Estimated hours
               </label>
 
               <Input
@@ -530,7 +530,7 @@ export default function ProjectForm({
 
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Horas usadas
+                Hours used
               </label>
 
               <Input
@@ -545,13 +545,13 @@ export default function ProjectForm({
 
       <div className="space-y-6 rounded-lg border bg-background p-6">
         <h2 className="text-lg font-semibold">
-          Notas y seguimiento
+          Notes and follow-up
         </h2>
 
         <div className="grid gap-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Notas para cliente
+              Client notes
             </label>
 
             <Textarea
@@ -569,7 +569,7 @@ export default function ProjectForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Notas internas
+              Internal notes
             </label>
 
             <Textarea
@@ -589,7 +589,11 @@ export default function ProjectForm({
 
       <div className="flex justify-end">
         <Button type="submit" disabled={processing}>
-          {processing ? 'Guardando...' : 'Guardar proyecto'}
+          {processing
+            ? 'Saving...'
+            : method === 'put'
+              ? 'Update project'
+              : 'Save project'}
         </Button>
       </div>
     </form>

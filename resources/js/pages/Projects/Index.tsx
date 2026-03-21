@@ -196,7 +196,7 @@ export default function ProjectsIndex({
           <Button
             onClick={() => router.get(projects.create.url())}
           >
-            Nuevo proyecto
+            New project
           </Button>
         </div>
 

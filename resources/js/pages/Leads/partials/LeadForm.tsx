@@ -70,7 +70,7 @@ export default function LeadForm({
     })
   }
 
-  function submit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     if (method === 'put') {
@@ -82,22 +82,21 @@ export default function LeadForm({
   }
 
   return (
-    <form onSubmit={submit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8">
 
       <div className="grid lg:grid-cols-2 gap-8">
 
         {/* Lead Info */}
-
         <div className="space-y-6 border rounded-lg p-6 bg-background">
 
           <h2 className="text-lg font-semibold">
-            Información del lead
+            Lead information
           </h2>
 
           <div className="grid gap-4">
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Nombre</label>
+              <label className="text-sm font-medium">First name</label>
               <Input
                 value={data.name}
                 onChange={(e) => setData('name', e.target.value)}
@@ -115,7 +114,7 @@ export default function LeadForm({
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Teléfono</label>
+              <label className="text-sm font-medium">Phone</label>
               <Input
                 value={data.phone}
                 onChange={(e) => setData('phone', e.target.value)}
@@ -123,7 +122,7 @@ export default function LeadForm({
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Empresa</label>
+              <label className="text-sm font-medium">Company</label>
               <Input
                 value={data.meta.company ?? ''}
                 onChange={(e) => setMeta('company', e.target.value)}
@@ -134,18 +133,18 @@ export default function LeadForm({
 
         </div>
 
-        {/* Comercial */}
-
+        {/* Commercial */}
         <div className="space-y-6 border rounded-lg p-6 bg-background">
 
           <h2 className="text-lg font-semibold">
-            Información comercial
+            Commercial information
           </h2>
 
           <div className="grid gap-4">
+
             <div className="space-y-2">
               <label className="text-sm font-medium">
-                Asignado a
+                Assigned to
               </label>
 
               <Select
@@ -153,13 +152,13 @@ export default function LeadForm({
                 onValueChange={(value) => setData('assigned_to', Number(value))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Seleccionar usuario" />
+                  <SelectValue placeholder="Select user" />
                 </SelectTrigger>
 
                 <SelectContent>
 
                   <SelectItem value="0">
-                    Sin asignar
+                    Unassigned
                   </SelectItem>
 
                   {users?.map((user) => (
@@ -176,8 +175,9 @@ export default function LeadForm({
               </Select>
 
             </div>
+
             <div className="space-y-2">
-              <label className="text-sm font-medium">Canal</label>
+              <label className="text-sm font-medium">Channel</label>
 
               <Select
                 value={data.channel}
@@ -220,7 +220,7 @@ export default function LeadForm({
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Valor del lead</label>
+              <label className="text-sm font-medium">Lead value</label>
               <Input
                 type="number"
                 value={data.meta.lead_value ?? 0}
@@ -237,18 +237,17 @@ export default function LeadForm({
       </div>
 
       {/* Billing */}
-
       <div className="border rounded-lg p-6 bg-background space-y-6">
 
         <h2 className="text-lg font-semibold">
-          Facturación
+          Billing information
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Nombre de facturación
+              Billing name
             </label>
             <Input
               value={data.meta.billing_name ?? ''}
@@ -260,7 +259,7 @@ export default function LeadForm({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">
-              Dirección
+              Address
             </label>
             <Input
               value={data.meta.billing_address ?? ''}
@@ -275,11 +274,10 @@ export default function LeadForm({
       </div>
 
       {/* Notes */}
-
       <div className="border rounded-lg p-6 bg-background space-y-4">
 
         <label className="text-sm font-medium">
-          Notas
+          Notes
         </label>
 
         <Input
@@ -291,7 +289,7 @@ export default function LeadForm({
 
       <div className="flex justify-end">
         <Button type="submit" disabled={processing}>
-          Guardar lead
+          {method === 'put' ? 'Update lead' : 'Save lead'}
         </Button>
       </div>
 

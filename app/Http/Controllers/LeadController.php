@@ -67,15 +67,17 @@ class LeadController extends Controller
             ->route('leads.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Cliente creado',
-                'description' => 'El cliente fue registrado correctamente',
+                'title' => 'Lead created',
+                'description' => 'The lead has been successfully registered',
                 'position' => 'top-center'
             ]);
     }
 
     public function edit(Lead $lead)
     {
-        $users = User::where('role', '!=', 'admin')->select('id', 'name')->get();
+        $users = User::where('role', '!=', 'admin')
+            ->select('id', 'name')
+            ->get();
 
         return Inertia::render('Leads/Edit', [
             'lead' => $lead,
@@ -101,8 +103,8 @@ class LeadController extends Controller
             ->route('leads.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Cliente actualizado',
-                'description' => 'Los datos del cliente fueron actualizados correctamente',
+                'title' => 'Lead updated',
+                'description' => 'Lead data has been successfully updated',
                 'position' => 'top-center'
             ]);
     }
@@ -115,8 +117,8 @@ class LeadController extends Controller
             ->route('leads.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Cliente eliminado',
-                'description' => 'El cliente fue eliminado correctamente',
+                'title' => 'Lead deleted',
+                'description' => 'The lead has been successfully deleted',
                 'position' => 'top-center'
             ]);
     }

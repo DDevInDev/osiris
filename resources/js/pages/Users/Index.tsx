@@ -50,7 +50,6 @@ interface Props {
   usersData: {
     data: User[]
   }
-
   filters: {
     search?: string
     role?: string
@@ -59,14 +58,13 @@ interface Props {
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
-    title: 'Usuarios',
+    title: 'Users',
     href: dashboard().url,
   },
 ]
 
 export default function UsersIndex({ usersData, filters }: Props) {
-
-  const search = (value: string) => {
+  const handleSearch = (value: string) => {
     router.get(
       users.index.url(),
       { ...filters, search: value || undefined },
@@ -74,42 +72,55 @@ export default function UsersIndex({ usersData, filters }: Props) {
     )
   }
 
+  const handleRoleChange = (value: string) => {
+    router.get(
+      users.index.url(),
+      { ...filters, role: value || undefined },
+      { preserveState: true }
+    )
+  }
+
+  const handleClearFilters = () => {
+    router.get(users.index.url())
+  }
+
+  const handleCreateUser = () => {
+    router.get(users.create.url())
+  }
+
+  const handleEditUser = (userId: number) => {
+    router.get(users.edit({ user: userId }).url)
+  }
+
+  const handleDeleteUser = (userId: number) => {
+    if (confirm('Are you sure you want to delete this user?')) {
+      router.delete(users.destroy({ user: userId }).url)
+    }
+  }
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Head title="Usuarios" />
+      <Head title="Users" />
 
       <div className="space-y-6 p-4">
-
-        {/* Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">
-            Usuarios
+            Users
           </h1>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-4 justify-between">
-
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-
-            {/* Search */}
             <Input
-              placeholder="Buscar nombre, correo o teléfono"
+              placeholder="Search by name, email, or phone"
               defaultValue={filters.search}
-              onChange={(e) => search(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
               className="w-[260px]"
             />
 
-            {/* Role */}
             <Select
               value={filters.role ?? ''}
-              onValueChange={(value) =>
-                router.get(
-                  users.index.url(),
-                  { ...filters, role: value || undefined },
-                  { preserveState: true }
-                )
-              }
+              onValueChange={handleRoleChange}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by role" />
@@ -134,32 +145,23 @@ export default function UsersIndex({ usersData, filters }: Props) {
               </SelectContent>
             </Select>
 
-            {/* Clear */}
             <Button
               variant="outline"
-              onClick={() => router.get(users.index.url())}
+              onClick={handleClearFilters}
             >
               Clear filters
             </Button>
-
           </div>
 
-          {/* Create */}
-          <Button
-            onClick={() => router.get(users.create.url())}
-          >
-            Nuevo usuario
+          <Button onClick={handleCreateUser}>
+            New user
           </Button>
-
         </div>
 
-        {/* Table */}
         <div className="rounded-lg border bg-background">
-
           <Table>
             <TableHeader>
               <TableRow>
-
                 <TableHead>
                   Name
                 </TableHead>
@@ -179,32 +181,25 @@ export default function UsersIndex({ usersData, filters }: Props) {
                 <TableHead className="text-right">
                   Actions
                 </TableHead>
-
               </TableRow>
             </TableHeader>
 
             <TableBody>
-
               {usersData.data.map((user) => (
                 <TableRow key={user.id}>
-
                   <TableCell className="font-medium">
                     {user.name} {user.last_name}
                   </TableCell>
 
                   <TableCell>
                     <div className="text-sm">
-
-                      <div>
-                        {user.email}
-                      </div>
+                      <div>{user.email}</div>
 
                       {user.phone && (
                         <div className="text-muted-foreground">
                           {user.phone}
                         </div>
                       )}
-
                     </div>
                   </TableCell>
 
@@ -219,9 +214,7 @@ export default function UsersIndex({ usersData, filters }: Props) {
                   </TableCell>
 
                   <TableCell className="text-right">
-
                     <DropdownMenu>
-
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
@@ -232,44 +225,26 @@ export default function UsersIndex({ usersData, filters }: Props) {
                       </DropdownMenuTrigger>
 
                       <DropdownMenuContent align="end">
-
                         <DropdownMenuItem
-                          onClick={() =>
-                            router.get(
-                              users.edit({ user: user.id }).url
-                            )
-                          }
+                          onClick={() => handleEditUser(user.id)}
                         >
                           Edit
                         </DropdownMenuItem>
 
                         <DropdownMenuItem
                           className="text-destructive"
-                          onClick={() => {
-                            if (confirm('Are you sure you want to delete this user?')) {
-                              router.delete(
-                                users.destroy({ user: user.id }).url
-                              )
-                            }
-                          }}
+                          onClick={() => handleDeleteUser(user.id)}
                         >
                           Delete
                         </DropdownMenuItem>
-
                       </DropdownMenuContent>
-
                     </DropdownMenu>
-
                   </TableCell>
-
                 </TableRow>
               ))}
-
             </TableBody>
           </Table>
-
         </div>
-
       </div>
     </AppLayout>
   )

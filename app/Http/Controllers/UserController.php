@@ -61,8 +61,8 @@ class UserController extends Controller
             ->route('users.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Usuario creado',
-                'description' => 'El usuario fue registrado correctamente',
+                'title' => 'User created',
+                'description' => 'The user has been successfully registered',
                 'position' => 'top-center',
             ]);
     }
@@ -85,8 +85,8 @@ class UserController extends Controller
             ->route('users.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Usuario actualizado',
-                'description' => 'Los datos del usuario fueron actualizados correctamente',
+                'title' => 'User updated',
+                'description' => 'User data has been successfully updated',
                 'position' => 'top-center',
             ]);
     }
@@ -99,8 +99,8 @@ class UserController extends Controller
             ->back()
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Usuario eliminado',
-                'description' => 'El usuario fue eliminado correctamente',
+                'title' => 'User deleted',
+                'description' => 'The user has been successfully deleted',
                 'position' => 'top-center',
             ]);
     }

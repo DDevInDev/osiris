@@ -153,7 +153,7 @@ export default function LeadsIndex({ leadsData, filters }: Props) {
           <Button
             onClick={() => router.get(leads.create.url())}
           >
-            Nuevo lead
+            Create Lead
           </Button>
         </div>
 

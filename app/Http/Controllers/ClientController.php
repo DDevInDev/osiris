@@ -45,10 +45,11 @@ class ClientController extends Controller
             ->select('id', 'name', 'email')
             ->get();
 
-        $initialValues = null;
         $commissioners = User::where('role', 'commissioner')
             ->select('id', 'name', 'email')
             ->get();
+
+        $initialValues = null;
 
         if ($request->filled('lead_id')) {
 
@@ -69,6 +70,7 @@ class ClientController extends Controller
                 'lead_id' => $lead->id
             ];
         }
+
         return Inertia::render('Clients/Create', [
             'users' => $users,
             'initialValues' => $initialValues,
@@ -89,8 +91,8 @@ class ClientController extends Controller
             ->route('clients.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Cliente creado',
-                'description' => 'El cliente fue creado correctamente',
+                'title' => 'Client created',
+                'description' => 'The client has been successfully created',
                 'position' => 'top-center'
             ]);
     }
@@ -100,6 +102,7 @@ class ClientController extends Controller
         $users = User::whereNotIn('role', ['commissioner'])
             ->select('id', 'name', 'email')
             ->get();
+
         $commissioners = User::where('role', 'commissioner')
             ->select('id', 'name', 'email')
             ->get();
@@ -119,8 +122,8 @@ class ClientController extends Controller
             ->route('clients.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Cliente actualizado',
-                'description' => 'El cliente fue actualizado correctamente',
+                'title' => 'Client updated',
+                'description' => 'The client has been successfully updated',
                 'position' => 'top-center'
             ]);
     }
@@ -133,8 +136,8 @@ class ClientController extends Controller
             ->route('clients.index')
             ->with('toast', [
                 'type' => 'success',
-                'title' => 'Cliente eliminado',
-                'description' => 'El cliente fue eliminado correctamente',
+                'title' => 'Client deleted',
+                'description' => 'The client has been successfully deleted',
                 'position' => 'top-center'
             ]);
     }
