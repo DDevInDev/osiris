@@ -1,178 +1,179 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import { Menu, X, Sparkles, ArrowRight } from "lucide-react";
-
-const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Proceso", href: "#proceso" },
-  { label: "Clientes", href: "#clientes" },
-  { label: "Contacto", href: "#contacto" },
-];
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useMemo } from 'react'
+import { Menu, X, Sparkles, ArrowRight } from 'lucide-react'
+import { useLocale } from '@/contexts/LocaleContext'
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [activeSection, setActiveSection] = useState("inicio");
+  const { t } = useLocale()
 
-  const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navLinks = useMemo(
+    () => [
+      { label: t.navbar.links.home, href: '#home', section: 'home' },
+      { label: t.navbar.links.about, href: '#about', section: 'about' },
+      { label: t.navbar.links.services, href: '#services', section: 'services' },
+      { label: t.navbar.links.process, href: '#process', section: 'process' },
+      { label: t.navbar.links.portfolio, href: '#portfolio', section: 'portfolio' },
+    ],
+    [t]
+  )
 
-  const isDesktop = !isMobile;
-  const isMinimal = isDesktop && isScrolled && !isDesktopMenuOpen;
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
+
+  const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const isDesktop = !isMobile
+  const isMinimal = isDesktop && isScrolled && !isDesktopMenuOpen
 
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = window.innerWidth < 1024;
-      setIsMobile(mobile);
+      const mobile = window.innerWidth < 1024
+      setIsMobile(mobile)
 
       if (!mobile) {
-        setIsMobileMenuOpen(false);
+        setIsMobileMenuOpen(false)
       }
+
       if (mobile) {
-        setIsDesktopMenuOpen(false);
+        setIsDesktopMenuOpen(false)
       }
-    };
+    }
 
     const handleScroll = () => {
-      const atTop = window.scrollY <= 10;
+      const atTop = window.scrollY <= 10
 
-      setIsScrolled(!atTop);
+      setIsScrolled(!atTop)
 
       if (atTop) {
-        setIsDesktopMenuOpen(false);
+        setIsDesktopMenuOpen(false)
       }
 
-      const sections = navLinks.map(link =>
-        link.href.replace("#", "")
-      );
+      for (const link of navLinks) {
+        const el = document.getElementById(link.section)
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
         if (el) {
-          const rect = el.getBoundingClientRect();
+          const rect = el.getBoundingClientRect()
+
           if (rect.top <= 120 && rect.bottom >= 120) {
-            setActiveSection(section);
-            break;
+            setActiveSection(link.section)
+            break
           }
         }
       }
-    };
+    }
 
+    checkMobile()
+    handleScroll()
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('resize', checkMobile)
+    window.addEventListener('scroll', handleScroll)
 
     return () => {
-      window.removeEventListener("resize", checkMobile);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      window.removeEventListener('resize', checkMobile)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [navLinks])
 
   const handleHamburgerClick = () => {
     if (isMobile) {
-      setIsMobileMenuOpen(prev => !prev);
-    } else {
-      setIsDesktopMenuOpen(prev => !prev);
+      setIsMobileMenuOpen((prev) => !prev)
+      return
     }
-  };
+
+    setIsDesktopMenuOpen((prev) => !prev)
+  }
 
   const handleLinkClick = () => {
-    setIsMobileMenuOpen(false);
-    setIsDesktopMenuOpen(false);
-  };
+    setIsMobileMenuOpen(false)
+    setIsDesktopMenuOpen(false)
+  }
 
   return (
     <>
-      {/* NAVBAR */}
       <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4">
         <motion.nav
-          animate={{ marginTop: isMinimal ? "16px" : "24px" }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className={`w-full max-w-7xl flex items-center justify-between px-6 py-3 rounded-full transition-all duration-300 ${isMinimal
-            ? "bg-transparent shadow-none"
-            : "bg-black/40 backdrop-blur-xl border border-white/10 shadow-xl"
-            }`}
+          animate={{ marginTop: isMinimal ? '16px' : '24px' }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          className={`flex w-full max-w-7xl items-center justify-between rounded-full px-6 py-3 transition-all duration-300 ${
+            isMinimal
+              ? 'border border-transparent bg-transparent shadow-none'
+              : 'border border-white/10 bg-black/40 shadow-xl backdrop-blur-xl'
+          }`}
         >
-          {/* LOGO */}
-          <a href="#inicio" className="flex-shrink-0">
+          <a href="#home" className="flex-shrink-0" onClick={handleLinkClick}>
             <img
               src="/images/logo.png"
-              alt="logo"
+              alt="Osiris Development"
               className="invert"
               width={isMinimal ? 120 : 150}
-              style={{ transition: "width 0.3s ease" }}
+              style={{ transition: 'width 0.3s ease' }}
             />
           </a>
 
-          {/* DESKTOP MENU */}
           <AnimatePresence>
             {isDesktop && (!isMinimal || isDesktopMenuOpen) && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="hidden lg:flex items-center gap-2"
+                className="hidden items-center gap-2 lg:flex"
               >
-                {navLinks.map(link => {
-                  const isActive =
-                    activeSection === link.href.replace("#", "");
+                {navLinks.map((link) => {
+                  const isActive = activeSection === link.section
 
                   return (
                     <a
                       key={link.href}
                       href={link.href}
                       onClick={handleLinkClick}
-                      className={`px-4 py-2 text-sm rounded-full transition ${isActive
-                        ? "bg-white/10 text-white"
-                        : "text-white/70 hover:text-white hover:bg-white/5"
-                        }`}
+                      className={`rounded-full px-4 py-2 text-sm transition ${
+                        isActive
+                          ? 'bg-white/10 text-white'
+                          : 'text-white/70 hover:bg-white/5 hover:text-white'
+                      }`}
                     >
                       {link.label}
                     </a>
-                  );
+                  )
                 })}
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* DESKTOP CTA */}
           <AnimatePresence>
             {isDesktop && (!isMinimal || isDesktopMenuOpen) && (
               <motion.a
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                href="#contacto"
-                className="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:scale-105 transition-transform"
+                href="#contact"
+                onClick={handleLinkClick}
+                className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-105 lg:inline-flex"
               >
-                <Sparkles className="w-4 h-4" />
-                Cotizar proyecto
+                <Sparkles className="h-4 w-4" />
+                {t.navbar.cta}
               </motion.a>
             )}
           </AnimatePresence>
 
-          {/* HAMBURGER */}
           {(isMobile || isMinimal) && (
             <button
+              type="button"
               onClick={handleHamburgerClick}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-purple-600"
             >
-              {(isMobile
-                ? isMobileMenuOpen
-                : isDesktopMenuOpen) ? (
-                <X className="w-5 h-5 text-white" />
+              {(isMobile ? isMobileMenuOpen : isDesktopMenuOpen) ? (
+                <X className="h-5 w-5 text-white" />
               ) : (
-                <Menu className="w-5 h-5 text-white" />
+                <Menu className="h-5 w-5 text-white" />
               )}
             </button>
           )}
         </motion.nav>
       </header>
 
-      {/* MOBILE PANEL */}
       <AnimatePresence>
         {isMobileMenuOpen && isMobile && (
           <>
@@ -181,36 +182,36 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
             />
 
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="fixed top-24 left-4 right-4 z-50 max-w-md mx-auto"
+              className="fixed top-24 left-4 right-4 z-50 mx-auto max-w-md"
             >
-              <div className="bg-black/90 backdrop-blur-2xl border border-white/20 rounded-3xl p-6">
+              <div className="rounded-3xl border border-white/20 bg-black/90 p-6 backdrop-blur-2xl">
                 <div className="space-y-3">
-                  {navLinks.map(link => (
+                  {navLinks.map((link) => (
                     <a
                       key={link.href}
                       href={link.href}
                       onClick={handleLinkClick}
-                      className="flex justify-between px-5 py-4 rounded-2xl text-white/80 hover:bg-white/5 transition"
+                      className="flex justify-between rounded-2xl px-5 py-4 text-white/80 transition hover:bg-white/5"
                     >
                       {link.label}
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="h-4 w-4" />
                     </a>
                   ))}
 
                   <a
-                    href="#contacto"
+                    href="#contact"
                     onClick={handleLinkClick}
-                    className="flex justify-center gap-2 w-full mt-4 px-6 py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white"
+                    className="mt-4 flex w-full justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4 text-white"
                   >
-                    <Sparkles className="w-4 h-4" />
-                    Cotizar proyecto
+                    <Sparkles className="h-4 w-4" />
+                    {t.navbar.cta}
                   </a>
                 </div>
               </div>
@@ -219,7 +220,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

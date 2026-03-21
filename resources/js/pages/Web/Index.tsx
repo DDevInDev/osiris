@@ -10,54 +10,58 @@ import CinematicSection from "@/components/ui/CinematicSection";
 import BlackTransition from "@/components/ui/BlackTransition";
 import TrailerText from "@/components/ui/TrailerText";
 import SectionReveal from "@/components/ui/SectionReveal";
+import { LocaleProvider } from "@/contexts/LocaleContext";
 
 const Index = () => {
   return (
-    <div className="bg-black text-white antialiased selection:bg-white/20">
+    <LocaleProvider>
 
-      <Navbar />
+      <div className="bg-black text-white antialiased selection:bg-white/20">
 
-      <CinematicSection
-        backgroundImage="/images/fondo.png"
-        fullScreen
-      >
-        <HeroSection />
-      </CinematicSection>
+        <Navbar />
 
-      <CinematicSection
-        backgroundImage="/images/fondo.png"
-        fullScreen
-        cameraPush
-      >
-        <AboutSection />
-      </CinematicSection>
+        <CinematicSection
+          backgroundImage="/images/fondo.png"
+          fullScreen
+        >
+          <HeroSection />
+        </CinematicSection>
 
-      <CinematicSection
-        backgroundImage="/images/back.jpg"
-        parallaxIntensity={100}
-      >
-        <ServicesSection />
-      </CinematicSection>
+        <CinematicSection
+          backgroundImage="/images/fondo.png"
+          fullScreen
+          cameraPush
+        >
+          <AboutSection />
+        </CinematicSection>
 
-      {/* <CinematicSection
+        <CinematicSection
+          backgroundImage="/images/back.jpg"
+          parallaxIntensity={100}
+        >
+          <ServicesSection />
+        </CinematicSection>
+
+        {/* <CinematicSection
         blurEffect
         fade
       >
         <TrailerText text="The process" className="text-[250px] font-bold text-center" />
       </CinematicSection> */}
 
-      <ProcessSection />
+        <ProcessSection />
 
-      <CinematicSection>
-        <ClientsSection />
-      </CinematicSection>
+        <CinematicSection>
+          <ClientsSection />
+        </CinematicSection>
 
-      <CinematicSection backgroundImage="/images/fondo.png">
-        <ContactSection />
-      </CinematicSection>
+        <CinematicSection backgroundImage="/images/fondo.png">
+          <ContactSection />
+        </CinematicSection>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </LocaleProvider>
   );
 };
 
